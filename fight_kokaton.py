@@ -146,13 +146,13 @@ class Score:
     """
     def __init__(self):
         self.fonto = pg.font.SysFont("hgp創英角ﾎﾟｯﾌﾟ体", 30)
-        self.color = (0, 0, 255)
+        self.color = (0, 0, 255)    #いろ
         self.score = 0
         self.img = self.fonto.render(f"スコア: {self.score}", 0, self.color)  # スコア表示用Surface
         self.rct = self.img.get_rect()
         self.rct.center = (100, HEIGHT - 50)
     def update(self, screen: pg.Surface):
-        self.img = self.fonto.render(f"スコア: {self.score}", 0, self.color)
+        self.img = self.fonto.render(f"スコア: {self.score}", 0, self.color)  #スコア表示
         screen.blit(self.img, self.rct)
 
 
@@ -162,7 +162,7 @@ def main():
     bg_img = pg.image.load("fig/pg_bg.jpg")
     bird = Bird((300, 200))
     beam = None
-    beams = []
+    beams = []  #ビームを格納する
     bomb = Bomb((255, 0, 0), 10)
     bombs = []
     score = Score()
