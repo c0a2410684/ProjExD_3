@@ -162,6 +162,7 @@ def main():
     bg_img = pg.image.load("fig/pg_bg.jpg")
     bird = Bird((300, 200))
     beam = None
+    beams = []
     bomb = Bomb((255, 0, 0), 10)
     bombs = []
     score = Score()
@@ -176,7 +177,8 @@ def main():
                 return
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 # スペースキー押下でBeamクラスのインスタンス生成
-                beam = Beam(bird)            
+                beam = Beam(bird)  
+                beams.append(beam)          
         screen.blit(bg_img, [0, 0])
         # if bomb is not None:
         for bomb in bombs:
@@ -192,19 +194,20 @@ def main():
         
         
         for j, bomb in enumerate(bombs):
-            if (beam is not None) and (bomb is not None):
-                if beam.rct.colliderect(bomb.rct):
-                # ビームと爆弾の衝突判定
-                    beam = None
-                    bombs[j] = None
-                    bird.change_img(6, screen)  #喜ぶこうかとん
-                    bombs = [bomb for bomb in bombs if bomb is not None]
-                    score.score += 1
-
+            for i,beam in enumerate(beams):
+                if (beam is not None) and (bomb is not None):
+                    if beam.rct.colliderect(bomb.rct):
+                    # ビームと爆弾の衝突判定
+                        beams[i] = None
+                        bombs[j] = None
+                        bird.change_img(6, screen)  #喜ぶこうかとん
+                        score.score += 1
+                    beams  = [beam for beam in beams if beam is not None]
+                    bombs  = [bomb for bomb in bombs if bomb is not None]
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-        if beam is not None:
+        for beam in beams:
              beam.update(screen) 
         for bomb in bombs:  
             bomb.update(screen)
@@ -212,10 +215,11 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
-
+        print(beams)
 
 if __name__ == "__main__":
     pg.init()
     main()
     pg.quit()
     sys.exit()
+       
